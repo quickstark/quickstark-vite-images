@@ -1,17 +1,31 @@
-import { DeleteIcon, WarningIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import {
+  DeleteIcon,
+  WarningIcon,
+  ArrowUpIcon,
+  QuestionIcon,
+} from "@chakra-ui/icons";
 import {
   Button,
   Center,
+  Link,
   ChakraProvider,
   Heading,
   HStack,
+  VStack,
   IconButton,
   Image,
   Input,
   SimpleGrid,
   Text,
-  VStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useEffect, useRef, useState } from "react";
@@ -26,6 +40,7 @@ const brand = {
   flame: "#F4834F",
   pink: "#E1567C",
   gold: "#F1B71C",
+  cyan: "#66C7C5",
   bg: "#181225",
 };
 
@@ -59,6 +74,7 @@ function App() {
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const [isDeleteSuccessful, setIsDeleteSuccessful] = useState(false);
   const inputRef = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
   const getImages = async () => {
@@ -160,13 +176,107 @@ function App() {
 
   return (
     <ChakraProvider>
-      <Center bg={brand.bg} padding={8}>
-        <VStack spacing={8}>
+      <Center bg={brand.bg}>
+        <VStack spacing={4}>
           <Image src={"/gh.png"}></Image>
-          <Heading color={brand.gold}>Smart'ish Gallery</Heading>
-          <Text color={brand.pink}>
-            Welcome to your Github Universe Gallery by Sentry.io
-          </Text>
+          <HStack>
+            <Heading as="h2" color={brand.cyan}>
+              I'm a Smart'ish{" "}
+              <Link color={brand.gold} href="https://sentry.io" isExternal>
+                Sentry.io
+              </Link>{" "}
+              Gallery
+            </Heading>
+            <IconButton
+              icon={<QuestionIcon />}
+              bg={brand.gold}
+              size="sm"
+              onClick={onOpen}
+            ></IconButton>
+          </HStack>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>What is this supposed to be anyway?</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text fontSize="lg">
+                  This site was built with {" "}
+                  <Link
+                    color={brand.flame}
+                    href="https://railway.app/"
+                    isExternal
+                  >
+                    Railway
+                  </Link>
+                  , {" "}
+                  <Link
+                        color={brand.flame}
+                        href="https://vitejs.dev/"
+                        isExternal
+                      >
+                        Vite.js
+                      </Link>
+                  , {" "}
+                  <Link
+                        color={brand.flame}
+                        href="https://https://fastapi.tiangolo.com/"
+                        isExternal
+                      >
+                        FastAPI
+                      </Link>
+                </Text>
+                <br></br>
+                <Text fontSize="lg">
+                  Vite & FastAPI have been instrumented with Sentry Error
+                  Monitoring and Performance Tracking.
+                </Text>
+                <br></br>
+                <Text fontSize="lg" color="black">
+                  <ol className="modal_list">
+                    <li>Upload a picture.</li>
+                    <li>
+                      Click the <WarningIcon color={brand.gold}></WarningIcon>{" "}
+                      button to send an Error with your Image Name and Labels to
+                      Sentry.
+                    </li>
+                    <li>
+                      Visit{" "}
+                      <Link
+                        color={brand.flame}
+                        href="https://sentry.io"
+                        isExternal
+                      >
+                        Sentry.io
+                      </Link>{" "}
+                      to see your Error(s) and browse Performance Data!
+                    </li>
+                    <br></br>
+                    <Text color={brand.flame}>Login Using</Text>
+                    ID: <span>demo@quickstark.com</span>
+                    <br></br>
+                    PW: <span>@Sentry2022</span>
+                  </ol>
+                </Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="yellow" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+                <Button>
+                  <Link
+                    colorScheme="purple"
+                    href="https://sentry.io"
+                    isExternal
+                  >
+                    Sentry.io
+                  </Link>
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          <br></br>
           <HStack>
             <Input
               color={brand.gold}

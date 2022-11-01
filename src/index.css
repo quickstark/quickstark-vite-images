@@ -1,4 +1,8 @@
-html {background-color: #181225};
+html {background-color: #181225;}
+
+#root {
+  margin-top:15px;
+}
 
 body {
   margin: 0;
@@ -72,3 +76,6 @@ code {
   color: #F4834F;
 }
 
+.modal_list {
+  margin-left: 20px;
+}
