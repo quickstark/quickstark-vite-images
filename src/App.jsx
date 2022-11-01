@@ -162,7 +162,7 @@ function App() {
     <ChakraProvider>
       <Center bg={brand.bg} padding={8}>
         <VStack spacing={8}>
-          <Image src={"public/ghuniverse-logo.png"}></Image>
+          <Image src={"/ghuniverse-logo.png"}></Image>
           <Heading color={brand.gold}>Smart'ish Gallery</Heading>
           <Text color={brand.pink}>
             Welcome to your Github Universe Gallery by Sentry.io
