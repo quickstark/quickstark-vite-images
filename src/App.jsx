@@ -29,7 +29,7 @@ const brand = {
   bg: "#181225",
 };
 
-const api_base_url = import.meta.env.VITE_API_BASE_URL
+const api_base_url = import.meta.env.VITE_API_BASE_URL;
 
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
@@ -62,7 +62,12 @@ function App() {
   const toast = useToast();
 
   const getImages = async () => {
-    const res = await axios.get(`${api_base_url}/images`);
+    const res = await axios({
+      method: "get",
+      mode: "cors",
+      withCredentials: false,
+      url: `${api_base_url}/images`,
+    });
     const data = await res.data;
     return data;
   };
