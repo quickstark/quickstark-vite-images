@@ -60,6 +60,12 @@ class ValidationError extends Error {
     this.name = `ERROR on - "${message}" `; // (2)
   }
 }
+class SuspectError extends Error {
+  constructor(message) {
+    super(message); // (1)
+    this.name = `New Error on - "${message}" `; // (2)
+  }
+}
 
 const onUnhandledError = async (message) => {
   throw new Error(message);
@@ -167,6 +173,7 @@ function App() {
       isClosable: true,
     });
     throw new ValidationError(image.name);
+    throw new SuspectError(image.name);
     // Clear attachments
     Sentry.configureScope((scope) => {
       scope.clearAttachments();
