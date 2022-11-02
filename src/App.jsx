@@ -229,8 +229,8 @@ function App() {
               size="sm"
               isRound={true}
               onClick={onOpen}
-              variant='link'
-              fontSize='2em'
+              variant="link"
+              fontSize="2em"
             ></IconButton>
           </HStack>
           <Modal isOpen={isOpen} onClose={onClose}>
@@ -280,13 +280,8 @@ function App() {
                   >
                     Postgres
                   </Link>
-                  ,{" "}
-                  <Text> and </Text>
-                  <Link
-                    color={brand.flame}
-                    href="https://sentry.io"
-                    isExternal
-                  >
+                  , <Text> and </Text>
+                  <Link color={brand.flame} href="https://sentry.io" isExternal>
                     Sentry
                   </Link>
                 </Text>
@@ -393,7 +388,14 @@ function App() {
                       onClick={() => onCreateError(image)}
                       icon={<WarningIcon />}
                     ></IconButton>
-
+                    <IconButton
+                      className="feedback_button"
+                      colorScheme="orange"
+                      aria-label="Send Feedback"
+                      size="md"
+                      onClick={() => onUnhandledError("Unhandled Error")}
+                      icon={<ChatIcon />}
+                    ></IconButton>
                     <IconButton
                       className="delete_button"
                       colorScheme="red"
