@@ -1,36 +1,18 @@
 import {
-  DeleteIcon,
-  WarningIcon,
-  ArrowUpIcon,
-  QuestionIcon,
-  QuestionOutlineIcon,
-  ChatIcon,
+  ArrowUpIcon, ChatIcon, DeleteIcon, QuestionIcon, WarningIcon
 } from "@chakra-ui/icons";
 import {
   Button,
-  Center,
-  Link,
-  ChakraProvider,
+  Center, ChakraProvider,
   Heading,
-  HStack,
-  VStack,
-  IconButton,
+  HStack, IconButton,
   Image,
-  Input,
-  SimpleGrid,
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useToast,
-  useDisclosure,
+  Input, Link, Modal, ModalBody,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid,
+  Text, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 
-import { useEffect, useRef, useState, createRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 import React from "react";
