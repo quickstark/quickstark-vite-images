@@ -71,6 +71,7 @@ Sentry.init({
 
 Sentry.configureScope((scope) => scope.setTransactionName("Images"));
 
+// Change
 class ValidationError extends Error {
   constructor(message) {
     super(message); // (1)
