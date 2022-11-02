@@ -3,6 +3,8 @@ import {
   WarningIcon,
   ArrowUpIcon,
   QuestionIcon,
+  QuestionOutlineIcon,
+  ChatIcon,
 } from "@chakra-ui/icons";
 import {
   Button,
@@ -28,7 +30,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, createRef } from "react";
 
 import axios from "axios";
 import React from "react";
@@ -57,7 +59,18 @@ Sentry.init({
   integrations: [new BrowserTracing()],
   routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
   tracesSampleRate: 1.0,
+  beforeSend(event, hint) {
+    // Check if it is an exception, and if so, show the report dialog
+    console.log(event, hint);
+
+    if (event.exception.values[0].value == "Unhandled Error") {
+      Sentry.showReportDialog({ eventId: event.event_id });
+    }
+    return event;
+  },
 });
+
+Sentry.configureScope((scope) => scope.setTransactionName("Images"));
 
 class ValidationError extends Error {
   constructor(message) {
@@ -65,6 +78,11 @@ class ValidationError extends Error {
     this.name = `ERROR on - "${message}" `; // (2)
   }
 }
+
+const onUnhandledError = async (message) => {
+  throw new Error(message);
+  Sentry.showReportDialog({ eventId: event.event_id });
+};
 
 function App() {
   const [allImages, setAllImages] = useState([]);
@@ -147,8 +165,13 @@ function App() {
 
   const onCreateError = async (image) => {
     // Add an attachment
+    const name =
+      image.name.substring(0, image.name.lastIndexOf(".")) || image.name;
     Sentry.configureScope((scope) => {
-      scope.addAttachment({ filename: image.name, data: image.url });
+      scope.addAttachment({
+        filename: `${name}.txt`,
+        data: JSON.stringify(...image.ai_labels, ...image.ai_text),
+      });
     });
     await image.ai_labels.map((label, index) => {
       Sentry.setTag(`Keyword-${index}`, label);
@@ -162,6 +185,10 @@ function App() {
       isClosable: true,
     });
     throw new ValidationError(image.name);
+    // Clear attachments
+    Sentry.configureScope((scope) => {
+      scope.clearAttachments();
+    });
   };
 
   useEffect(() => {
@@ -177,8 +204,17 @@ function App() {
   return (
     <ChakraProvider>
       <Center bg={brand.bg}>
-        <VStack spacing={4}>
+        <VStack spacing={2}>
           <Image src={"/gh.png"}></Image>
+          <HStack>
+            <Text color={brand.light_violet}>Brought to you by: </Text>
+            <Image
+              htmlWidth="75px"
+              objectFit="contain"
+              src={"/sentry.png"}
+            ></Image>
+          </HStack>
+
           <HStack>
             <Heading as="h2" color={brand.cyan}>
               I'm a Smart'ish{" "}
@@ -189,9 +225,12 @@ function App() {
             </Heading>
             <IconButton
               icon={<QuestionIcon />}
-              bg={brand.gold}
+              color={brand.gold}
               size="sm"
+              isRound={true}
               onClick={onOpen}
+              variant='link'
+              fontSize='2em'
             ></IconButton>
           </HStack>
           <Modal isOpen={isOpen} onClose={onClose}>
@@ -201,7 +240,15 @@ function App() {
               <ModalCloseButton />
               <ModalBody>
                 <Text fontSize="lg">
-                  This site was built with {" "}
+                  This site was built using<br></br>
+                  <Link
+                    color={brand.flame}
+                    href="https://github.com/"
+                    isExternal
+                  >
+                    Github
+                  </Link>
+                  ,{" "}
                   <Link
                     color={brand.flame}
                     href="https://railway.app/"
@@ -209,55 +256,85 @@ function App() {
                   >
                     Railway
                   </Link>
-                  , {" "}
+                  ,{" "}
                   <Link
-                        color={brand.flame}
-                        href="https://vitejs.dev/"
-                        isExternal
-                      >
-                        Vite.js
-                      </Link>
-                  , {" "}
+                    color={brand.flame}
+                    href="https://vitejs.dev/"
+                    isExternal
+                  >
+                    Vite
+                  </Link>
+                  ,{" "}
                   <Link
-                        color={brand.flame}
-                        href="https://https://fastapi.tiangolo.com/"
-                        isExternal
-                      >
-                        FastAPI
-                      </Link>
+                    color={brand.flame}
+                    href="https://fastapi.tiangolo.com/"
+                    isExternal
+                  >
+                    FastAPI
+                  </Link>
+                  ,{" "}
+                  <Link
+                    color={brand.flame}
+                    href="https://www.postgresql.org/"
+                    isExternal
+                  >
+                    Postgres
+                  </Link>
+                  ,{" "}
+                  <Text> and </Text>
+                  <Link
+                    color={brand.flame}
+                    href="https://sentry.io"
+                    isExternal
+                  >
+                    Sentry
+                  </Link>
                 </Text>
                 <br></br>
-                <Text fontSize="lg">
-                  Vite & FastAPI have been instrumented with Sentry Error
-                  Monitoring and Performance Tracking.
-                </Text>
-                <br></br>
-                <Text fontSize="lg" color="black">
-                  <ol className="modal_list">
-                    <li>Upload a picture.</li>
-                    <li>
-                      Click the <WarningIcon color={brand.gold}></WarningIcon>{" "}
-                      button to send an Error with your Image Name and Labels to
-                      Sentry.
-                    </li>
-                    <li>
-                      Visit{" "}
-                      <Link
-                        color={brand.flame}
-                        href="https://sentry.io"
-                        isExternal
-                      >
-                        Sentry.io
-                      </Link>{" "}
-                      to see your Error(s) and browse Performance Data!
-                    </li>
-                    <br></br>
-                    <Text color={brand.flame}>Login Using</Text>
-                    ID: <span>demo@quickstark.com</span>
-                    <br></br>
-                    PW: <span>@Sentry2022</span>
-                  </ol>
-                </Text>
+                <VStack spacing={4} align="left">
+                  <Text fontSize="lg">
+                    Vite & FastAPI have been instrumented with Sentry Error
+                    Monitoring and Performance Tracking.
+                  </Text>
+                  <Text>1. Upload a picture.</Text>
+                  <Text>
+                    2. If your pic contains the word "Error" or "Errors", the
+                    FASTApi integration will issue an error.
+                  </Text>
+                  <Text>3. Then try clicking a button</Text>
+                  <Text>
+                    <WarningIcon color={brand.flame}></WarningIcon>
+                    {" - "}
+                    button to send an Error with your Image Name and Labels to
+                    Sentry.
+                  </Text>
+                  <Text>
+                    <ChatIcon color={brand.flame}></ChatIcon>
+                    {" - "}
+                    button to trap an Unhandled Error with Feedback.
+                  </Text>
+                  <Text>
+                    <DeleteIcon color={brand.flame}></DeleteIcon>
+                    {" - "}
+                    button to delete a picture.
+                  </Text>
+                  <Text>
+                    Login to{" "}
+                    <Link
+                      color={brand.flame}
+                      href="https://sentry.io"
+                      isExternal
+                    >
+                      Sentry.io
+                    </Link>{" "}
+                    to see your Errors, Perf and Feedback
+                  </Text>
+                  to see your Error(s) and browse Performance Data!
+                  <Text>
+                    <Text color={brand.flame}>Login Using</Text>ID:
+                    demo@quickstark.com <br></br>PW: @Sentry2022
+                  </Text>
+                </VStack>
               </ModalBody>
 
               <ModalFooter>
@@ -316,6 +393,7 @@ function App() {
                       onClick={() => onCreateError(image)}
                       icon={<WarningIcon />}
                     ></IconButton>
+
                     <IconButton
                       className="delete_button"
                       colorScheme="red"
@@ -336,12 +414,12 @@ function App() {
                     {" "}
                     <span className="ai_text">Text: </span>{" "}
                     {image.ai_text?.length > 0
-                      ? image.ai_text.join(",  ")
+                      ? image.ai_text.slice(0, 10).join(",  ")
                       : "No Text Detected"}{" "}
                     <br></br>
                     <span className="ai_label">Labels: </span>{" "}
                     {image.ai_labels.length > 0
-                      ? image.ai_labels?.join(",  ")
+                      ? image.ai_labels?.slice(0, 10).join(",  ")
                       : "No Labels Detected"}{" "}
                   </Text>
                   {/* {image.ai_labels.map((label) => {
