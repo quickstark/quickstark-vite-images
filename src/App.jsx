@@ -1,15 +1,32 @@
 import {
-  ArrowUpIcon, ChatIcon, DeleteIcon, QuestionIcon, WarningIcon
+  ArrowUpIcon,
+  ChatIcon,
+  DeleteIcon,
+  QuestionIcon,
+  WarningIcon,
 } from "@chakra-ui/icons";
 import {
   Button,
-  Center, ChakraProvider,
+  Center,
+  ChakraProvider,
   Heading,
-  HStack, IconButton,
+  HStack,
+  IconButton,
   Image,
-  Input, Link, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid,
-  Text, useDisclosure, useToast, VStack
+  Input,
+  Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  SimpleGrid,
+  Text,
+  useDisclosure,
+  useToast,
+  VStack,
 } from "@chakra-ui/react";
 
 import { useEffect, useRef, useState } from "react";
@@ -172,7 +189,7 @@ function App() {
       duration: 5000,
       isClosable: true,
     });
-    throw new ValidationError(image.name);
+    // throw new ValidationError(image.name);
     throw new SuspectError(image.name);
     // Clear attachments
     Sentry.configureScope((scope) => {
