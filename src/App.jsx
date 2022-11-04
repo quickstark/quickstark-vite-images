@@ -185,7 +185,7 @@ function App() {
       isClosable: true,
     });
     // throw new ValidationError(image.name);
-    throw new SuspectError(image.name);
+    throw new ValidationError(image.name);
     // Clear attachments
     Sentry.configureScope((scope) => {
       scope.clearAttachments();
