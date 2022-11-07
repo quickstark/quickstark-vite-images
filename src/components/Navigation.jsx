@@ -12,7 +12,7 @@ export default function Navigation() {
   return (
     <Center>
       <Breadcrumb separator=" | ">
-        <BreadcrumbItem>
+        <BreadcrumbItem >
           <BreadcrumbLink as={NavLink} to="/">
             Home
           </BreadcrumbLink>

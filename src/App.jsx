@@ -1,22 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { Grid, GridItem } from "@chakra-ui/react";
 import Home from "./components/Home";
-import theme from "./theme";
-import {
-  ChakraProvider,
-  Center,
-  Flex,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from "@chakra-ui/react";
 
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import { createBrowserHistory } from "history";
-import Navigation from "./components/Navigation"
 import About from "./components/About";
+import Navigation from "./components/Navigation";
 const history = createBrowserHistory();
 
 Sentry.init({
@@ -41,7 +32,7 @@ Sentry.configureScope((scope) => scope.setTransactionName("Home"));
 function App() {
   return (
     <>
-      <Navigation/>
+      <Navigation />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>

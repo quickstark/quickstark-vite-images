@@ -99,14 +99,25 @@ export default function Home() {
   };
 
   const onFileUpload = async (e) => {
-    setIsLoading(true);
-    const formdata = new FormData();
-    formdata.append("file", selectedFile, selectedFile.name);
-    const res = await postImage(`${api_base_url}/add_image`, formdata);
-    setIsUploadSuccessful(!isUploadSuccessful);
-    setIsLoading(false);
-    console.log(`Amazon Response: ${res}`);
-    console.log(`File Uploaded: ${isUploadSuccessful}`);
+    if (inputRef.current.value == "") {
+      toast({
+        title: `Select an Image`,
+        description: `Please select an image to upload`,
+        position: "top",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    } else {
+      setIsLoading(true);
+      const formdata = new FormData();
+      formdata.append("file", selectedFile, selectedFile.name);
+      const res = await postImage(`${api_base_url}/add_image`, formdata);
+      setIsUploadSuccessful(!isUploadSuccessful);
+      setIsLoading(false);
+      console.log(`Amazon Response: ${res}`);
+      console.log(`File Uploaded: ${isUploadSuccessful}`);
+    }
   };
 
   const onFileDelete = async (image) => {
@@ -176,35 +187,35 @@ export default function Home() {
             src={"/sentry.png"}
           ></Image>
         </HStack>
-          <Heading textAlign='center' color="purple.300" as="h2">
-            I'm a Smart'ish{" "}
-            <Link href="https://sentry.io" isExternal>
-              Sentry.io
-            </Link>{" "}
-            Gallery
-          </Heading>
+        <Heading textAlign="center" color="purple.300" as="h2">
+          I'm a Smart'ish{" "}
+          <Link color="purple.400" href="https://sentry.io" isExternal>
+            Sentry.io
+          </Link>{" "}
+          Gallery
+        </Heading>
         <br></br>
-          <Input
-            color="purple.300"
-            ref={inputRef}
-            type="file"
-            onChange={onInputChange}
-            size="lg"
-            maxWidth={400}
-          />
-          <Button
-            bg="yellow.500"
-            rightIcon={<ArrowUpIcon />}
-            iconSpacing={2}
-            padding={5}
-            size="lg"
-            onClick={onFileUpload}
-            isLoading={isLoading}
-            loadingText="Upload"
-            className="upload_button"
-          >
-            Upload Photo
-          </Button>
+        <Input
+          color="purple.300"
+          ref={inputRef}
+          type="file"
+          onChange={onInputChange}
+          size="lg"
+          maxWidth={400}
+        />
+        <Button
+          bg="yellow.500"
+          rightIcon={<ArrowUpIcon />}
+          iconSpacing={2}
+          padding={5}
+          size="lg"
+          onClick={onFileUpload}
+          isLoading={isLoading}
+          loadingText="Upload"
+          className="upload_button"
+        >
+          Upload Photo
+        </Button>
         <br></br>
         <SimpleGrid columns={cols} spacing={8}>
           {allImages.map((image) => {
