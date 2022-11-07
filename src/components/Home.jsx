@@ -21,7 +21,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { useMediaQuery } from '@chakra-ui/react'
+import { useMediaQuery } from "@chakra-ui/react";
 
 import { useEffect, useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
@@ -51,11 +51,11 @@ export default function Home() {
   const [isSelected, setIsSelected] = useState(false);
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const [isDeleteSuccessful, setIsDeleteSuccessful] = useState(false);
-  const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)')
+  const [isLargerThan1200] = useMediaQuery("(min-width: 1200px)");
   const inputRef = useRef(null);
   const toast = useToast();
 
-  const cols = isLargerThan1200 ? 4 : 1
+  const cols = isLargerThan1200 ? 4 : 1;
 
   const getImages = async () => {
     const res = await axios({
@@ -176,23 +176,21 @@ export default function Home() {
             src={"/sentry.png"}
           ></Image>
         </HStack>
-        <HStack>
-          <Heading color="purple.300" as="h2">
+          <Heading textAlign='center' color="purple.300" as="h2">
             I'm a Smart'ish{" "}
             <Link href="https://sentry.io" isExternal>
               Sentry.io
             </Link>{" "}
             Gallery
           </Heading>
-        </HStack>
         <br></br>
-        <HStack>
           <Input
             color="purple.300"
             ref={inputRef}
             type="file"
             onChange={onInputChange}
             size="lg"
+            maxWidth={400}
           />
           <Button
             bg="yellow.500"
@@ -207,7 +205,6 @@ export default function Home() {
           >
             Upload Photo
           </Button>
-        </HStack>
         <br></br>
         <SimpleGrid columns={cols} spacing={8}>
           {allImages.map((image) => {

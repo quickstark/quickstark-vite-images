@@ -11,29 +11,29 @@ export default function About() {
       <VStack spacing={4} align="left">
         <Text fontSize="lg">
           This site was built using<br></br>
-          <Link href="https://github.com/" isExternal>
+          <Link color='pink.300' href="https://github.com/" isExternal>
             Github
           </Link>
           ,{" "}
-          <Link href="https://railway.app/" isExternal>
+          <Link color='pink.300' href="https://railway.app/" isExternal>
             Railway
           </Link>
           ,{" "}
-          <Link href="https://vitejs.dev/" isExternal>
+          <Link color='pink.300' href="https://vitejs.dev/" isExternal>
             Vite
           </Link>
           ,{" "}
-          <Link href="https://fastapi.tiangolo.com/" isExternal>
+          <Link color='pink.300' href="https://fastapi.tiangolo.com/" isExternal>
             FastAPI
           </Link>
           ,{" "}
-          <Link href="https://www.postgresql.org/" isExternal>
+          <Link color='pink.300' href="https://www.postgresql.org/" isExternal>
             Postgres
           </Link>
           , <Text> and </Text>
-          <Link href="https://sentry.io" isExternal>
-            Sentry, of course
-          </Link>
+          <Link color='orange.300' href="https://sentry.io" isExternal>
+            Sentry
+          </Link>, of course
         </Text>
         <Text fontSize="lg">
           Vite & FastAPI have been instrumented with Sentry Error Monitoring and
@@ -41,7 +41,7 @@ export default function About() {
         </Text>
         <Text>1. Upload a picture.</Text>
         <Text>
-          2. If your pic contains the word "Error" or "Errors", the FASTApi
+          2. If your pic contains the word "Error" or "Errors" or contains an image identified as a "Bug", the FASTApi
           integration will issue an error.
         </Text>
         <Text>3. Then try clicking a button</Text>
