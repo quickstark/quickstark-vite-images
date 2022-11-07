@@ -1,29 +1,33 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import {
-  Center,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from "@chakra-ui/react";
+import { Flex, Box, Spacer, Center, Button } from "@chakra-ui/react";
 
 export default function Navigation() {
   return (
-    <Center>
-      <Breadcrumb separator=" | ">
-        <BreadcrumbItem >
-          <BreadcrumbLink as={NavLink} to="/">
+    <Center margin={5}>
+      <Flex >
+        <Button margin={2}>
+          <NavLink
+            to="/"
+            style={({ isActive }) => {
+              return isActive ? { color: "orange" } : { color: "gray" };
+            }}
+          >
             Home
-          </BreadcrumbLink>
-        </BreadcrumbItem>
+          </NavLink>
+        </Button>
 
-        <BreadcrumbItem>
-          <BreadcrumbLink as={NavLink} to="/about">
+        <Button margin={2}>
+          <NavLink
+            to="/about"
+            style={({ isActive }) => {
+              return isActive ? { color: "orange" } : { color: "gray" };
+            }}
+          >
             About
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+          </NavLink>
+        </Button>
+      </Flex>
     </Center>
   );
 }
