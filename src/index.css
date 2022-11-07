@@ -1,22 +1,22 @@
-html {background-color: #181225;}
+/* html {background-color: #181225;}
 
 #root {
   margin-top:15px;
-}
+} */
 
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */
 
 .logo{
   background-color: #181225;
@@ -34,6 +34,7 @@ code {
 }
 
 .button_container{
+  margin-top: 5px;
   display:flexbox;
   float: left;
   width: 0px;

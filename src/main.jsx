@@ -1,10 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { ColorModeScript } from "@chakra-ui/react";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </BrowserRouter>
+    </ChakraProvider>
   </React.StrictMode>
-)
+);
