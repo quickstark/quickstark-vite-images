@@ -1,6 +1,6 @@
+import { Button, Center, Flex } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Flex, Box, Spacer, Center, Button } from "@chakra-ui/react";
 
 export default function Navigation() {
   return (

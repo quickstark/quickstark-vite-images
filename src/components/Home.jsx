@@ -180,7 +180,6 @@ export default function Home() {
       <VStack spacing={2}>
         <Image src={"/gh.png"}></Image>
         <HStack>
-          <Text color="purple.300">Brought to you by: </Text>
           <Image
             htmlWidth="75px"
             objectFit="contain"
