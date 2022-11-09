@@ -113,11 +113,21 @@ export default function Home() {
       const formdata = new FormData();
       formdata.append("file", selectedFile, selectedFile.name);
       const res = await postImage(`${api_base_url}/add_image`, formdata);
+      if (res.data.message.includes("questionable") ) {
+        toast({
+          title: `Questionable Content`,
+          description: `${res.data.message}`,
+          position: "top",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      } else {
       setIsUploadSuccessful(!isUploadSuccessful);
       setIsLoading(false);
-      console.log(`Amazon Response: ${res}`);
+      console.log(`Amazon Response: ${JSON.stringify(res)}`);
       console.log(`File Uploaded: ${isUploadSuccessful}`);
-    }
+    }}
   };
 
   const onFileDelete = async (image) => {
