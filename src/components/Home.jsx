@@ -124,10 +124,10 @@ export default function Home() {
         });
       } else {
       setIsUploadSuccessful(!isUploadSuccessful);
-      setIsLoading(false);
       console.log(`Amazon Response: ${JSON.stringify(res)}`);
       console.log(`File Uploaded: ${isUploadSuccessful}`);
     }}
+    setIsLoading(false);
   };
 
   const onFileDelete = async (image) => {
