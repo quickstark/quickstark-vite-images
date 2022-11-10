@@ -113,7 +113,7 @@ export default function Home() {
       const formdata = new FormData();
       formdata.append("file", selectedFile, selectedFile.name);
       const res = await postImage(`${api_base_url}/add_image`, formdata);
-      if (res.data.message.includes("questionable") ) {
+      if (res.data?.message.includes("questionable")) {
         toast({
           title: `Questionable Content`,
           description: `${res.data.message}`,
@@ -123,10 +123,11 @@ export default function Home() {
           isClosable: true,
         });
       } else {
-      setIsUploadSuccessful(!isUploadSuccessful);
-      console.log(`Amazon Response: ${JSON.stringify(res)}`);
-      console.log(`File Uploaded: ${isUploadSuccessful}`);
-    }}
+        setIsUploadSuccessful(!isUploadSuccessful);
+        console.log(`Amazon Response: ${JSON.stringify(res)}`);
+        console.log(`File Uploaded: ${isUploadSuccessful}`);
+      }
+    }
     setIsLoading(false);
   };
 
@@ -188,7 +189,7 @@ export default function Home() {
   return (
     <Center>
       <VStack spacing={2}>
-        <Image src={"/gh.png"}></Image>
+        <Image htmlWidth="400px" objectFit="contain" src={"/ms.svg"}></Image>
         <HStack>
           <Image
             htmlWidth="75px"
