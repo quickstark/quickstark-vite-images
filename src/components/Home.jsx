@@ -189,14 +189,18 @@ export default function Home() {
   return (
     <Center>
       <VStack spacing={2}>
-        <Image htmlWidth="400px" objectFit="contain" src={"/ms.svg"}></Image>
-        <HStack>
+        <Image
+          htmlWidth="400px"
+          objectFit="contain"
+          src={"/sentry.png"}
+        ></Image>
+        {/* <HStack>
           <Image
             htmlWidth="75px"
             objectFit="contain"
             src={"/sentry.png"}
           ></Image>
-        </HStack>
+        </HStack> */}
         <Heading textAlign="center" color="purple.300" as="h2">
           I'm a Smart'ish{" "}
           <Link color="purple.400" href="https://sentry.io" isExternal>
