@@ -992,6 +992,26 @@
   "resolved" "https://registry.npmjs.org/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz"
   "version" "3.4.1"
 
+"@datadog/browser-core@4.25.0":
+  "integrity" "sha512-YWyap3wSOd8+JeT24h6pvHYgDIFJKaMXh+MBGL9xUV9NHkXhLW45YNuYdjGR8CQKJzIHEmqsZv6WuuGWD80E+g=="
+  "resolved" "https://registry.npmjs.org/@datadog/browser-core/-/browser-core-4.25.0.tgz"
+  "version" "4.25.0"
+
+"@datadog/browser-rum-core@4.25.0":
+  "integrity" "sha512-QC1ssd7WwgoqL06rtGNWM1zATO07sOTVXQ0M53jxd1LbU2Z+hbrQyCJwCtO58A9oAUbb8+Lu+G2P4tS4r5OmnQ=="
+  "resolved" "https://registry.npmjs.org/@datadog/browser-rum-core/-/browser-rum-core-4.25.0.tgz"
+  "version" "4.25.0"
+  dependencies:
+    "@datadog/browser-core" "4.25.0"
+
+"@datadog/browser-rum@^4.25.0":
+  "integrity" "sha512-zq8a3+83gnPoOvQzAlQS/upq5RMD+gVlJ8j9EkOSeyQ/AeShUooU1WwwKg/v4bmMOuChPmceM2wBDUll5IXIeA=="
+  "resolved" "https://registry.npmjs.org/@datadog/browser-rum/-/browser-rum-4.25.0.tgz"
+  "version" "4.25.0"
+  dependencies:
+    "@datadog/browser-core" "4.25.0"
+    "@datadog/browser-rum-core" "4.25.0"
+
 "@emotion/babel-plugin@^11.10.5":
   "integrity" "sha512-xE7/hyLHJac7D2Ve9dKroBBZqBT7WuPQmWcq7HSGb84sUuP4mlOWoB8dvVfD9yk5DHkU1m6RW7xSoDtnQHNQeA=="
   "resolved" "https://registry.npmjs.org/@emotion/babel-plugin/-/babel-plugin-11.10.5.tgz"
