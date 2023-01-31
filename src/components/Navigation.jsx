@@ -1,6 +1,7 @@
 import { Button, Center, Flex } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import * as Sentry from "@sentry/react";
 
 export default function Navigation() {
   return (
@@ -25,6 +26,17 @@ export default function Navigation() {
             }}
           >
             About
+          </NavLink>
+        </Button>
+
+        <Button margin={2}>
+          <NavLink
+            to="/error"
+            style={({ isActive }) => {
+              return isActive ? { color: "orange" } : { color: "gray" };
+            }}
+          >
+            Force Error
           </NavLink>
         </Button>
       </Flex>

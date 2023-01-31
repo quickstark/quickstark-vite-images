@@ -40,8 +40,11 @@ class ValidationError extends Error {
 }
 
 const onUnhandledError = async (message) => {
-  throw new Error(message);
-  Sentry.showReportDialog({ eventId: event.event_id });
+  try {
+    throw new Error(message);
+  } catch {
+    Sentry.showReportDialog();
+  }
 };
 
 export default function Home() {
@@ -177,6 +180,20 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Add an attachment
+    Sentry.configureScope((scope) => {
+      scope.setTransactionName("Home Page");
+      scope.addAttachment({
+        filename: "home_attachment.txt",
+        data: "Attachment on Home Page",
+      });
+    });
+
+    // Capture a "non Error" Message with an attachment
+    Sentry.captureMessage("Home Page Message");
+  }, []);
+
+  useEffect(() => {
     const images = getImages().then((res) => {
       console.log(res);
       setAllImages(res);
@@ -235,11 +252,17 @@ export default function Home() {
           {allImages.map((image) => {
             return (
               <div className="image_container">
-                <Text color="purple.500" width={300} noOfLines={1}>
+                <Text
+                  key={`image_name-${image.id}`}
+                  color="purple.500"
+                  width={300}
+                  noOfLines={1}
+                >
                   {image.name}
                 </Text>
                 <div className="button_container">
                   <IconButton
+                    key={`error_button-${image.id}`}
                     bg="gray.800"
                     color="yellow.300"
                     className="error_button"
@@ -250,16 +273,18 @@ export default function Home() {
                     icon={<WarningIcon />}
                   ></IconButton>
                   <IconButton
+                    key={`feedback_button-${image.id}`}
                     bg="gray.800"
                     color="yellow.300"
                     className="feedback_button"
                     colorScheme="orange"
                     aria-label="Send Feedback"
                     size="md"
-                    onClick={() => onUnhandledError("Unhandled Error")}
+                    onClick={() => onUnhandledError("User Feedback Error")}
                     icon={<ChatIcon />}
                   ></IconButton>
                   <IconButton
+                    key={`delete_button-${image.id}`}
                     bg="gray.800"
                     color="red.500"
                     className="delete_button"
@@ -271,13 +296,17 @@ export default function Home() {
                   ></IconButton>
                 </div>
                 <Image
-                  key={image.id}
+                  key={`image-${image.id}`}
                   borderRadius={15}
                   boxSize="300px"
                   src={image.url}
                   objectFit="cover"
                 ></Image>
-                <Text className="label_container" width={300}>
+                <Text
+                  key={`label-${image.id}`}
+                  className="label_container"
+                  width={300}
+                >
                   {" "}
                   <span className="ai_text">Text: </span>{" "}
                   {image.ai_text?.length > 0

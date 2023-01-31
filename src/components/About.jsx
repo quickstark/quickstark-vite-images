@@ -13,16 +13,28 @@ import {
   Container,
 } from "@chakra-ui/react";
 import React from "react";
-
+import { useEffect } from "react";
 import * as Sentry from "@sentry/react";
-Sentry.configureScope((scope) => scope.setTransactionName("About"));
 
 export default function About() {
+  useEffect(() => {
+    // Add an attachment
+    Sentry.configureScope((scope) => {
+      scope.setTransactionName("About Page");
+      scope.addAttachment({
+        filename: "about_attachment.txt",
+        data: "Attachment on About Page",
+      });
+    });
+
+    // Capture a "non Error" Message with an attachment
+    Sentry.captureMessage("About Page Message");
+  }, []);
   return (
-    <Center fontSize='1.2em'>
-      <VStack width="lg" spacing={4} align="left" >
-        <Container bg="gray.700" borderRadius={10} padding={5} >
-          <Text fontSize='1.2em' >
+    <Center fontSize="1.2em">
+      <VStack width="lg" spacing={4} align="left">
+        <Container bg="gray.700" borderRadius={10} padding={5}>
+          <Text fontSize="1.2em">
             <Heading size="lg">This site was built using</Heading>
             <Link color="pink.500" href="https://github.com/" isExternal>
               Github
@@ -59,7 +71,7 @@ export default function About() {
             >
               Amazon Rekognition
             </Link>
-             ... <Text> and </Text>
+            ... <Text> and </Text>
             <Link color="pink.500" href="https://sentry.io" isExternal>
               Sentry
             </Link>
@@ -73,34 +85,40 @@ export default function About() {
             and Performance Tracking.
           </Text>
         </Container>
-        <Container bg="gray.700" borderRadius={10} padding={5} fontSize='1.2em'>
+        <Container bg="gray.700" borderRadius={10} padding={5} fontSize="1.2em">
           <Heading size="lg">Quick Instructions</Heading>
           <OrderedList>
             <ListItem>Upload a picture.</ListItem>
-            <ListItem>If your pic contains the word "Error" or "Errors" or contains
-              an image identified as a "Bug", the FASTApi integration will issue
-              an error.
+            <ListItem>
+              If your pic contains the word "Error" or "Errors" or contains an
+              image identified as a "Bug", the FASTApi integration will issue an
+              error.
             </ListItem>
             <ListItem>Then try clicking a button</ListItem>
             <Divider margin={5} size="md" />
           </OrderedList>
-            <Text>
-              <WarningIcon color="yellow.500"></WarningIcon>
-              {" - "}
-              sends an Error with your Image Name + Labels to Sentry.
-            </Text>
-            <Text>
-              <ChatIcon color="yellow.500"></ChatIcon>
-              {" - "}
-              traps an Unhandled Error with Feedback.
-            </Text>
-            <Text>
-              <DeleteIcon color="red.500"></DeleteIcon>
-              {" - "}
-              deletes a picture.
-            </Text>
+          <Text>
+            <WarningIcon color="yellow.500"></WarningIcon>
+            {" - "}
+            sends an Error with your Image Name + Labels to Sentry.
+          </Text>
+          <Text>
+            <ChatIcon color="yellow.500"></ChatIcon>
+            {" - "}
+            traps an Unhandled Error with Feedback.
+          </Text>
+          <Text>
+            <DeleteIcon color="red.500"></DeleteIcon>
+            {" - "}
+            deletes a picture.
+          </Text>
         </Container>
-        <Container bg="green.900" borderRadius={10} padding={5} fontSize='1.2em'>
+        <Container
+          bg="green.900"
+          borderRadius={10}
+          padding={5}
+          fontSize="1.2em"
+        >
           <Heading size="lg">Check out your data</Heading>
           <Text>
             Login to{" "}
