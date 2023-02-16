@@ -6,7 +6,7 @@ import * as Sentry from "@sentry/react";
 export default function Navigation() {
   return (
     <Center margin={5}>
-      <Flex >
+      <Flex>
         <Button margin={2}>
           <NavLink
             to="/"

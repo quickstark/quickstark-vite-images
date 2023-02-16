@@ -308,15 +308,19 @@ export default function Home() {
                   width={300}
                 >
                   {" "}
-                  <span className="ai_text">Text: </span>{" "}
-                  {image.ai_text?.length > 0
-                    ? image.ai_text.slice(0, 10).join(",  ")
-                    : "No Text Detected"}{" "}
+                  <span className="ai_text sentry-mask">
+                    Text:{" "}
+                    {image.ai_text?.length > 0
+                      ? image.ai_text.slice(0, 10).join(",  ")
+                      : "No Text Detected"}{" "}
+                  </span>
                   <br></br>
-                  <span className="ai_label">Labels: </span>{" "}
-                  {image.ai_labels.length > 0
-                    ? image.ai_labels?.slice(0, 10).join(",  ")
-                    : "No Labels Detected"}{" "}
+                  <span className="ai_label">
+                    Labels:{" "}
+                    {image.ai_labels.length > 0
+                      ? image.ai_labels?.slice(0, 10).join(",  ")
+                      : "No Labels Detected"}{" "}
+                  </span>
                 </Text>
                 {/* {image.ai_labels.map((label) => {
                       return <Text className="image_ai_labels">{label}</Text>;

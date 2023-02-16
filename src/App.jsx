@@ -20,25 +20,25 @@ Sentry.init({
     new Sentry.Replay({
       maskAllText: false,
       blockAllMedia: false,
-      blockClass: "chakra-heading",
+      //blockClass: "ai_text",
+      maskTextClass: "ai_label",
     }),
   ],
+
   // routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
   tracesSampleRate: 1.0,
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.5,
+
+  // This sets the Replay sample rate. You may want this to be 100% while
+  // in development and perhaps lower in production
+  replaysSessionSampleRate: 1.0,
+
   // If the entire session is not sampled, use the below sample rate to sample
   // sessions when an error occurs.
   replaysOnErrorSampleRate: 1.0,
 
   beforeSend(event, hint) {
-    // Check if it is an exception, and if so, show the report dialog
+    // Just logging to console for reference
     console.log(event, hint);
-
-    // if (event.exception.values[0].value == "Unhandled Error") {
-    //   Sentry.showReportDialog({ eventId: event.event_id });
-    // }
     return event;
   },
 });
