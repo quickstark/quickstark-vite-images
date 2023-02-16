@@ -1,4 +1,5 @@
 !**/glob-import/dir/node_modules
+.env
 .DS_Store
 .idea
 *.cpuprofile
