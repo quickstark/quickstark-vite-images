@@ -1,0 +1,29 @@
+[
+  {
+    "$unwind": {
+      "path": "$orders"
+    }
+  },
+  {
+    "$group": {
+      "_id": "$userID",
+      "firstName": {
+        "$first": "$firstName"
+      },
+      "lastName": {
+        "$last": "$lastName"
+      },
+      "orderTotal": {
+        "$sum": "$orders.totalOrderAmount"
+      }
+    }
+  },
+  {
+    "$sort": {
+      "orderTotal": -1
+    }
+  },
+  {
+    "$limit": 10
+  }
+]

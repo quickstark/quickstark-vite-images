@@ -13,6 +13,8 @@ import {
   IconButton,
   Image,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Link,
   SimpleGrid,
   Text,
@@ -55,7 +57,8 @@ export default function Home() {
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const [isDeleteSuccessful, setIsDeleteSuccessful] = useState(false);
   const [isLargerThan1200] = useMediaQuery("(min-width: 1200px)");
-  const inputRef = useRef(null);
+  const fileUploadRef = useRef(null);
+  const errorTextRef = useRef(null);
   const toast = useToast();
 
   const cols = isLargerThan1200 ? 4 : 1;
@@ -101,8 +104,27 @@ export default function Home() {
     setSelectedFile(e.target.files[0]);
   };
 
+  const onErrorGenerator = async (e) => {
+    for (let i = 0; i < 100; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      try {
+        toast({
+          title: "Error Sent",
+          description: `We sent your ERROR on Error Generator - ${i} to Sentry`,
+          position: "top",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+        throw new ValidationError(`${errorTextRef.current.value} - ${i}`);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    }
+  };
+
   const onFileUpload = async (e) => {
-    if (inputRef.current.value == "") {
+    if (fileUploadRef.current.value == "") {
       toast({
         title: `Select an Image`,
         description: `Please select an image to upload`,
@@ -197,7 +219,7 @@ export default function Home() {
     const images = getImages().then((res) => {
       console.log(res);
       setAllImages(res);
-      inputRef.current.value = null;
+      fileUploadRef.current.value = null;
     });
   }, [isUploadSuccessful, isDeleteSuccessful]);
 
@@ -226,27 +248,50 @@ export default function Home() {
           Gallery
         </Heading>
         <br></br>
-        <Input
-          color="purple.300"
-          ref={inputRef}
-          type="file"
-          onChange={onInputChange}
-          size="lg"
-          maxWidth={400}
-        />
-        <Button
-          bg="yellow.500"
-          rightIcon={<ArrowUpIcon />}
-          iconSpacing={2}
-          padding={5}
-          size="lg"
-          onClick={onFileUpload}
-          isLoading={isLoading}
-          loadingText="Upload"
-          className="upload_button"
-        >
-          Upload Photo
-        </Button>
+        <Center>
+          <InputGroup>
+            <Input
+              color="purple.300"
+              ref={fileUploadRef}
+              type="file"
+              onChange={onInputChange}
+              size="lg"
+              maxWidth={400}
+            />
+            <Button
+              bg="yellow.500"
+              rightIcon={<ArrowUpIcon />}
+              iconSpacing={2}
+              padding={5}
+              size="lg"
+              onClick={onFileUpload}
+              isLoading={isLoading}
+              loadingText="Upload"
+              className="upload_button"
+            >
+              Upload Photo
+            </Button>
+          </InputGroup>
+        </Center>
+        {/* <InputGroup size="lg">
+          <InputLeftAddon children="Error Text"></InputLeftAddon>
+          <Input
+            placeholder="Generated Error"
+            ref={errorTextRef}
+            size="lg"
+            maxWidth={275}
+          />
+          <Button
+            bg="red.500"
+            rightIcon={<ArrowUpIcon />}
+            onClick={onErrorGenerator}
+            loadingText="Generate 100 Random Errors"
+            className="error_gen_button"
+          >
+            Generate 100 Errors
+          </Button>
+        </InputGroup> */}
+
         <br></br>
         <SimpleGrid columns={cols} spacing={8}>
           {allImages.map((image) => {
@@ -308,15 +353,17 @@ export default function Home() {
                   width={300}
                 >
                   {" "}
-                  <span className="ai_text sentry-mask">
-                    Text:{" "}
+                  <span className="ai_text">
+                    {" "}
+                    {/*Add sentry-mask for Replay*/}
+                    Text Detected:{" "}
                     {image.ai_text?.length > 0
                       ? image.ai_text.slice(0, 10).join(",  ")
                       : "No Text Detected"}{" "}
                   </span>
                   <br></br>
                   <span className="ai_label">
-                    Labels:{" "}
+                    Tags:{" "}
                     {image.ai_labels.length > 0
                       ? image.ai_labels?.slice(0, 10).join(",  ")
                       : "No Labels Detected"}{" "}

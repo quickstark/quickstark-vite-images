@@ -1,32 +1,37 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Grid, GridItem } from "@chakra-ui/react";
-import Home from "./components/Home";
 
-import * as Sentry from "@sentry/react";
-
-import { BrowserTracing } from "@sentry/tracing";
-import { createBrowserHistory } from "history";
+//Import Components
 import About from "./components/About";
-import Navigation from "./components/Navigation";
 import Error from "./components/Error";
-const history = createBrowserHistory();
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
 
+// Import Sentry
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+// Initialize Sentry
 Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN,
-  release: import.meta.env.VITE_RELEASE, //Need the release for sourcemaps
+  dsn: import.meta.env.VITE_SENTRY_DSN, //DSN from Sentry Project Settings
+  release: import.meta.env.VITE_RELEASE, //Sourcemaps are tethered to release
+  _experiments: {
+    enableInteractions: true, //Experimental feature to enable page-level XHR interactions
+  },
   integrations: [
-    new BrowserTracing(),
+    new BrowserTracing({
+      tracePropagationTargets: [import.meta.env.VITE_API_BASE_URL], //Circumvent CORS
+    }),
     new Sentry.Replay({
-      maskAllText: false,
-      blockAllMedia: false,
+      maskAllText: false, //Obfuscate all text
+      blockAllMedia: false, //Obfuscate all media
       //blockClass: "ai_text",
-      maskTextClass: "ai_label",
+      //maskTextClass: "ai_label",
     }),
   ],
-
-  // routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
-  tracesSampleRate: 1.0,
+  // This sets the Transaction sample rate. You may want this to be 100% while
+  // in development and perhaps lower in production
+  tracesSampleRate: 1.0, 
 
   // This sets the Replay sample rate. You may want this to be 100% while
   // in development and perhaps lower in production
@@ -36,8 +41,7 @@ Sentry.init({
   // sessions when an error occurs.
   replaysOnErrorSampleRate: 1.0,
 
-  beforeSend(event, hint) {
-    // Just logging to console for reference
+  beforeSend(event, hint) { //This is a callback function that allows you to modify the event before it is sent to Sentry.
     console.log(event, hint);
     return event;
   },

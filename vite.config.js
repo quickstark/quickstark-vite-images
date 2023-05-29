@@ -17,13 +17,17 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       react(),
       sentryVitePlugin({
-        include: "dist",
-        // urlPrefix: "~",
-        ignore: ["node_modules", "vite.config.js"],
-        release: env.VITE_RELEASE,
         org: env.VITE_SENTRY_ORG,
         project: env.VITE_SENTRY_PROJECT,
+        release: { name: env.VITE_RELEASE },
         authToken: env.VITE_SENTRY_AUTH,
+        // urlPrefix: "~",
+        sourcemaps: {
+          // Specify the directory containing build artifacts
+          assets: "./**",
+          // Don't upload the source maps of dependencies
+          ignore: ["./node_modules/**", "vite.config.js"],
+        },
       }),
     ],
   };
