@@ -2,34 +2,35 @@ import {
   ArrowUpIcon,
   ChatIcon,
   DeleteIcon,
-  QuestionIcon,
   WarningIcon,
 } from "@chakra-ui/icons";
 import {
   Button,
   Center,
   Heading,
-  HStack,
   IconButton,
   Image,
   Input,
   InputGroup,
-  InputLeftAddon,
   Link,
+  Radio,
+  RadioGroup,
   SimpleGrid,
+  Stack,
   Text,
-  useDisclosure,
-  useToast,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useMediaQuery } from "@chakra-ui/react";
 
-import { useEffect, useRef, useState } from "react";
 import * as Sentry from "@sentry/react";
+import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 import React from "react";
+
+import { useEnvContext } from "./Context";
 
 const api_base_url = import.meta.env.VITE_API_BASE_URL;
 
@@ -37,9 +38,21 @@ const api_base_url = import.meta.env.VITE_API_BASE_URL;
 class ValidationError extends Error {
   constructor(message) {
     super(message); // (1)
+    Sentry.configureScope((scope) => {
+      scope.setUser({
+        id: 1,
+        email: "dirk.nielsen@sentry.io",
+      });
+    });
     this.name = `ERROR on - "${message}" `; // (2)
   }
 }
+
+Sentry.setContext("launchdarklyContext", {
+  key: "sentry-errors",
+  kind: "user",
+  name: "Dirk",
+});
 
 const onUnhandledError = async (message) => {
   try {
@@ -50,6 +63,7 @@ const onUnhandledError = async (message) => {
 };
 
 export default function Home() {
+  const [activeBackend, setActiveBackend] = useEnvContext();
   const [allImages, setAllImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -63,12 +77,22 @@ export default function Home() {
 
   const cols = isLargerThan1200 ? 4 : 1;
 
+  // function to convert string to mixed case
+  const toMixedCase = (str) => {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const getImages = async () => {
     const res = await axios({
       method: "get",
       mode: "cors",
       withCredentials: false,
       url: `${api_base_url}/images`,
+      params: { backend: activeBackend },
     });
     const data = await res.data;
     return data;
@@ -79,6 +103,7 @@ export default function Home() {
       method: "post",
       url: url,
       data: formdata,
+      params: { backend: activeBackend },
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res;
@@ -87,6 +112,7 @@ export default function Home() {
   const delImage = async (id) => {
     const res = await axios({
       method: "delete",
+      params: { backend: activeBackend },
       url: `${api_base_url}/delete_image/${id}`,
     });
     return res;
@@ -157,13 +183,17 @@ export default function Home() {
   };
 
   const onFileDelete = async (image) => {
-    const res = await delImage(image.id);
+    const id = image.id || image._id?.$oid; // Mongo or Postgres
+    console.log(`Delete: {db: ${activeBackend}, id: ${id}`);
+    const res = await delImage(id);
     if (res.status == "201") {
       setIsDeleteSuccessful(!isDeleteSuccessful);
       console.log(res);
       toast({
         title: `Delete Picture`,
-        description: `We deleted ${image.name}`,
+        description: `We deleted ${image.name} from ${toMixedCase(
+          activeBackend
+        )}`,
         position: "top",
         status: "error",
         duration: 5000,
@@ -215,15 +245,14 @@ export default function Home() {
     Sentry.captureMessage("Home Page Message");
   }, []);
 
+  // Refresh after Upload or Delete
   useEffect(() => {
     const images = getImages().then((res) => {
-      console.log(res);
       setAllImages(res);
+      localStorage.setItem("activeBackend", activeBackend);
       fileUploadRef.current.value = null;
     });
-  }, [isUploadSuccessful, isDeleteSuccessful]);
-
-  console.log(allImages);
+  }, [isUploadSuccessful, isDeleteSuccessful, activeBackend]);
 
   return (
     <Center>
@@ -272,6 +301,21 @@ export default function Home() {
               Upload Photo
             </Button>
           </InputGroup>
+          <RadioGroup
+            defaultValue="mongo"
+            padding={5}
+            onChange={setActiveBackend}
+            value={activeBackend}
+          >
+            <Stack spacing={5} direction="row">
+              <Radio colorScheme="green" value="mongo">
+                Mongo
+              </Radio>
+              <Radio colorScheme="orange" value="postgres">
+                Postgres
+              </Radio>
+            </Stack>
+          </RadioGroup>
         </Center>
         {/* <InputGroup size="lg">
           <InputLeftAddon children="Error Text"></InputLeftAddon>
@@ -298,7 +342,7 @@ export default function Home() {
             return (
               <div className="image_container">
                 <Text
-                  key={`image_name-${image.id}`}
+                  key={image.id}
                   color="purple.500"
                   width={300}
                   noOfLines={1}
@@ -364,7 +408,7 @@ export default function Home() {
                   <br></br>
                   <span className="ai_label">
                     Tags:{" "}
-                    {image.ai_labels.length > 0
+                    {image.ai_labels?.length > 0
                       ? image.ai_labels?.slice(0, 10).join(",  ")
                       : "No Labels Detected"}{" "}
                   </span>

@@ -1,14 +1,12 @@
 import {
-  Heading,
-  Divider,
   Center,
+  Container,
+  Heading,
   Link,
   Text,
   VStack,
-  Container,
 } from "@chakra-ui/react";
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import * as Sentry from "@sentry/react";
 
