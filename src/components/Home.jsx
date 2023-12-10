@@ -89,7 +89,7 @@ export default function Home() {
   const getImages = async () => {
     const res = await axios({
       method: "get",
-      mode: "cors",
+      // mode: "cors",
       withCredentials: false,
       url: `${api_base_url}/images`,
       params: { backend: activeBackend },
