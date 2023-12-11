@@ -20,10 +20,9 @@ Sentry.init({
   integrations: [
     new BrowserTracing({
       // tracePropagationTargets: [import.meta.env.VITE_API_BASE_URL], //Circumvent CORS
-      new Sentry.BrowserTracing(),
-      new Sentry.BrowserProfilingIntegration(),
       tracePropagationTargets: ["127.0.0.1"], //Circumvent CORS
     }),
+    new Sentry.BrowserProfilingIntegration(),
     new Sentry.Replay({
       maskAllText: false, //Mask all text
       blockAllMedia: false, //Block all media
