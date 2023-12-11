@@ -47,7 +47,7 @@ jobs:
 
       - name: Generate Final Version
         id: taggerFinal
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
@@ -64,7 +64,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Release Action
-        uses: ncipollo/release-action@v1.10.0
+        uses: ncipollo/release-action@v1.13.0
         with:
           tag: ${{ needs.generate_git_tags.outputs.output_new_tag }}
           token: ${{ secrets.CHANGELOG_RELEASE }}
