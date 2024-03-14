@@ -89,7 +89,6 @@ export default function Home() {
   };
 
   const getImages = async () => {
-
     const res = await axios({
       method: "get",
       // mode: "cors",
@@ -304,22 +303,22 @@ export default function Home() {
               Upload Photo
             </Button>
           </InputGroup>
-          <RadioGroup
-            defaultValue="mongo"
-            padding={5}
-            onChange={setActiveBackend}
-            value={activeBackend}
-          >
-            <Stack spacing={5} direction="row">
-              <Radio colorScheme="green" value="mongo">
-                Mongo
-              </Radio>
-              <Radio colorScheme="orange" value="postgres">
-                Postgres
-              </Radio>
-            </Stack>
-          </RadioGroup>
         </Center>
+        <RadioGroup
+          defaultValue="mongo"
+          padding={5}
+          onChange={setActiveBackend}
+          value={activeBackend}
+        >
+          <Stack spacing={5} direction="row">
+            <Radio colorScheme="green" value="mongo">
+              Mongo
+            </Radio>
+            <Radio colorScheme="orange" value="postgres">
+              Postgres
+            </Radio>
+          </Stack>
+        </RadioGroup>
         {/* <InputGroup size="lg">
           <InputLeftAddon children="Error Text"></InputLeftAddon>
           <Input

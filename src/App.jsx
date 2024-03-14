@@ -34,7 +34,7 @@ Sentry.init({
     Sentry.feedbackIntegration({
       // Additional SDK configuration goes in here, for example:
       colorScheme: "system",
-    }), 
+    }),
   ],
   tracesSampleRate: 1.0, // Performance sample rate.
   replaysSessionSampleRate: 1.0, //Replay sample rate.
@@ -50,13 +50,13 @@ Sentry.init({
 function stringifyLargeObject(obj, maxProperties = 1000) {
   // Convert the object into an array of [key, value] pairs
   const entries = Object.entries(obj);
-  
+
   // Slice the entries array to keep up to maxProperties elements
   const reducedEntries = entries.slice(0, maxProperties);
-  
+
   // Convert the sliced entries array back into an object
   const reducedObj = Object.fromEntries(reducedEntries);
-  
+
   // Stringify the reduced object
   return JSON.stringify(reducedObj);
 }
