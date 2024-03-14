@@ -273,6 +273,11 @@ export default function Home() {
             Gallery
           </Link>{" "}
         </Heading>
+        <Heading textAlign={"center"} color="blue.300" size={"md"}>
+          {" "}
+          Note: Uploading a picture identified as a "bug" will generate a
+          Backend Error
+        </Heading>
         <br></br>
         <Center>
           <InputGroup>
