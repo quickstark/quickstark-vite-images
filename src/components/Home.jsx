@@ -346,50 +346,50 @@ export default function Home() {
           {allImages.map((image) => {
             return (
               <div className="image_container">
+                <Text
+                  key={image.id}
+                  color="purple.500"
+                  width={300}
+                  noOfLines={1}
+                >
+                  {image.name}
+                </Text>
+                <div className="button_container">
+                  <IconButton
+                    key={`error_button-${image.id}`}
+                    bg="gray.800"
+                    color="yellow.300"
+                    className="error_button"
+                    colorScheme="yellow"
+                    aria-label="Throw Error"
+                    size="md"
+                    onClick={() => onSendError(image)}
+                    icon={<WarningIcon />}
+                  ></IconButton>
+                  <IconButton
+                    key={`feedback_button-${image.id}`}
+                    bg="gray.800"
+                    color="yellow.300"
+                    className="feedback_button"
+                    colorScheme="orange"
+                    aria-label="Send Feedback"
+                    size="md"
+                    onClick={() => onUnhandledError("User Feedback Error")}
+                    icon={<ChatIcon />}
+                  ></IconButton>
+                  <IconButton
+                    key={`delete_button-${image.id}`}
+                    bg="gray.800"
+                    color="red.500"
+                    className="delete_button"
+                    colorScheme="red"
+                    aria-label="Delete Image"
+                    size="md"
+                    onClick={() => onFileDelete(image)}
+                    icon={<DeleteIcon />}
+                  ></IconButton>
+                </div>
                 <Zoom>
-                  <Text
-                    key={image.id}
-                    color="purple.500"
-                    width={300}
-                    noOfLines={1}
-                  >
-                    {image.name}
-                  </Text>
-                  <div className="button_container">
-                    <IconButton
-                      key={`error_button-${image.id}`}
-                      bg="gray.800"
-                      color="yellow.300"
-                      className="error_button"
-                      colorScheme="yellow"
-                      aria-label="Throw Error"
-                      size="md"
-                      onClick={() => onSendError(image)}
-                      icon={<WarningIcon />}
-                    ></IconButton>
-                    <IconButton
-                      key={`feedback_button-${image.id}`}
-                      bg="gray.800"
-                      color="yellow.300"
-                      className="feedback_button"
-                      colorScheme="orange"
-                      aria-label="Send Feedback"
-                      size="md"
-                      onClick={() => onUnhandledError("User Feedback Error")}
-                      icon={<ChatIcon />}
-                    ></IconButton>
-                    <IconButton
-                      key={`delete_button-${image.id}`}
-                      bg="gray.800"
-                      color="red.500"
-                      className="delete_button"
-                      colorScheme="red"
-                      aria-label="Delete Image"
-                      size="md"
-                      onClick={() => onFileDelete(image)}
-                      icon={<DeleteIcon />}
-                    ></IconButton>
-                  </div>
                   <Image
                     key={`image-${image.id}`}
                     borderRadius={15}
@@ -397,29 +397,29 @@ export default function Home() {
                     src={image.url}
                     objectFit="cover"
                   ></Image>
-                  <Text
-                    key={`label-${image.id}`}
-                    className="label_container"
-                    width={300}
-                  >
-                    {" "}
-                    <span className="ai_text">
-                      {" "}
-                      {/*Add sentry-mask for Replay*/}
-                      Text Detected:{" "}
-                      {image.ai_text?.length > 0
-                        ? image.ai_text.slice(0, 10).join(",  ")
-                        : "No Text Detected"}{" "}
-                    </span>
-                    <br></br>
-                    <span className="ai_label">
-                      Tags:{" "}
-                      {image.ai_labels?.length > 0
-                        ? image.ai_labels?.slice(0, 10).join(",  ")
-                        : "No Labels Detected"}{" "}
-                    </span>
-                  </Text>
                 </Zoom>
+                <Text
+                  key={`label-${image.id}`}
+                  className="label_container"
+                  width={300}
+                >
+                  {" "}
+                  <span className="ai_text">
+                    {" "}
+                    {/*Add sentry-mask for Replay*/}
+                    Text Detected:{" "}
+                    {image.ai_text?.length > 0
+                      ? image.ai_text.slice(0, 10).join(",  ")
+                      : "No Text Detected"}{" "}
+                  </span>
+                  <br></br>
+                  <span className="ai_label">
+                    Tags:{" "}
+                    {image.ai_labels?.length > 0
+                      ? image.ai_labels?.slice(0, 10).join(",  ")
+                      : "No Labels Detected"}{" "}
+                  </span>
+                </Text>
                 {/* {image.ai_labels.map((label) => {
                       return <Text className="image_ai_labels">{label}</Text>;
                     })} */}
