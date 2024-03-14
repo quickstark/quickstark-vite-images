@@ -259,11 +259,7 @@ export default function Home() {
   return (
     <Center>
       <VStack spacing={2}>
-        <Image
-          htmlWidth="400px"
-          objectFit="contain"
-          src={"/sentry.png"}
-        ></Image>
+        <Image htmlWidth="400px" objectFit="contain" src={"/qs.png"}></Image>
         {/* <HStack>
           <Image
             htmlWidth="75px"
@@ -274,34 +270,36 @@ export default function Home() {
         <Heading textAlign="center" color="purple.300" as="h2">
           I'm a Smart'ish{" "}
           <Link color="purple.400" href="https://sentry.io" isExternal>
-            Sentry.io
+            Gallery
           </Link>{" "}
-          Gallery
         </Heading>
         <br></br>
         <Center>
           <InputGroup>
-            <Input
-              color="purple.300"
-              ref={fileUploadRef}
-              type="file"
-              onChange={onInputChange}
-              size="lg"
-              maxWidth={400}
-            />
-            <Button
-              bg="yellow.500"
-              rightIcon={<ArrowUpIcon />}
-              iconSpacing={2}
-              padding={5}
-              size="lg"
-              onClick={onFileUpload}
-              isLoading={isLoading}
-              loadingText="Upload"
-              className="upload_button"
-            >
-              Upload Photo
-            </Button>
+            <VStack spacing={5}>
+              <Input
+                color="purple.300"
+                ref={fileUploadRef}
+                type="file"
+                onChange={onInputChange}
+                size="lg"
+                maxWidth={400}
+              />
+
+              <Button
+                bg="yellow.500"
+                rightIcon={<ArrowUpIcon />}
+                iconSpacing={2}
+                padding={5}
+                size="lg"
+                onClick={onFileUpload}
+                isLoading={isLoading}
+                loadingText="Upload"
+                className="upload_button"
+              >
+                Upload Photo
+              </Button>
+            </VStack>
           </InputGroup>
         </Center>
         <RadioGroup

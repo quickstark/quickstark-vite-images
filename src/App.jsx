@@ -7,6 +7,7 @@ import { EnvProvider } from "./components/Context";
 import Error from "./components/Error";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
+
 // Import Sentry
 import * as Sentry from "@sentry/react";
 
