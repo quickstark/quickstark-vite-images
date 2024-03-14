@@ -11,43 +11,7 @@ import Navigation from "./components/Navigation";
 // Import Sentry
 import * as Sentry from "@sentry/react";
 
-// Initialize Sentry
-Sentry.init({
-  // debug: true,
-  dsn: import.meta.env.VITE_SENTRY_DSN, //DSN from Sentry Project Settings
-  release: import.meta.env.VITE_RELEASE, //Sourcemaps are tethered to release
-  environment: import.meta.env.VITE_ENVIRONMENT, //Environment
-  integrations: [
-    new Sentry.BrowserTracing({
-      // tracePropagationTargets: [import.meta.env.VITE_API_BASE_URL], //Circumvent CORS
-      tracePropagationTargets: [
-        "127.0.0.1",
-        "https://quickstark-fastapi-images.up.railway.app/",
-      ], //Circumvent CORS
-    }),
-    new Sentry.BrowserProfilingIntegration(),
-    new Sentry.Replay({
-      maskAllText: false, //Mask all text
-      blockAllMedia: false, //Block all media
-      mask: [".label_container", ".ai_label"], //Mask class
-      unmask: [".unmask-me"], //Unmask class
-    }),
-    Sentry.feedbackIntegration({
-      // Additional SDK configuration goes in here, for example:
-      colorScheme: "system",
-    }),
-  ],
-  tracesSampleRate: 1.0, // Performance sample rate.
-  replaysSessionSampleRate: 1.0, //Replay sample rate.
-  replaysOnErrorSampleRate: 1.0, //Replay on error sample rate.
-  profilesSampleRate: 1.0, //Profile sample rate.
-  //Callback to modify event before it is sent.
-  beforeSend(event, hint) {
-    console.log(console.log(stringifyLargeObject(event, 1000)));
-    return event;
-  },
-});
-
+//Function to reduce and stringify large objects
 function stringifyLargeObject(obj, maxProperties = 1000) {
   // Convert the object into an array of [key, value] pairs
   const entries = Object.entries(obj);
