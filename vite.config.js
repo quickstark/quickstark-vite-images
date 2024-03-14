@@ -14,6 +14,14 @@ export default defineConfig(({ command, mode }) => {
       sourcemapFile: "/static",
       emptyOutDir: true,
     },
+    server: {
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          res.setHeader('Document-Policy', 'js-profiling');
+          next();
+        });
+      },
+    },
     plugins: [
       react(),
       sentryVitePlugin({
