@@ -1,7 +1,6 @@
 import { Button, Center, Flex } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import * as Sentry from "@sentry/react";
 
 export default function Navigation() {
   return (

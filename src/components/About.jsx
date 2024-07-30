@@ -14,21 +14,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useEffect } from "react";
-import * as Sentry from "@sentry/react";
 
 export default function About() {
   useEffect(() => {
-    // Add an attachment
-    Sentry.configureScope((scope) => {
-      scope.setTransactionName("About Page");
-      scope.addAttachment({
-        filename: "about_attachment.txt",
-        data: "Attachment on About Page",
-      });
-    });
-
-    // Capture a "non Error" Message with an attachment
-    Sentry.captureMessage("About Page Message");
+    console.log("About Page Loaded");
   }, []);
   return (
     <Center fontSize="1.2em">
@@ -72,8 +61,8 @@ export default function About() {
               Amazon Rekognition
             </Link>
             ... <Text> and </Text>
-            <Link color="pink.500" href="https://sentry.io" isExternal>
-              Sentry
+            <Link color="pink.500" href="https://datadoghq.com" isExternal>
+              Datadog
             </Link>
             , of course
           </Text>
@@ -81,8 +70,8 @@ export default function About() {
         <Container bg="pink.800" borderRadius={10} padding={5}>
           <Heading size="lg">What's been instrumented?</Heading>
           <Text fontSize="lg">
-            Vite & FastAPI have been instrumented with Sentry Error Monitoring
-            and Performance Tracking.
+            Vite & FastAPI have been instrumented with Error Monitoring
+            and Performance Monitoring.
           </Text>
         </Container>
         <Container bg="gray.700" borderRadius={10} padding={5} fontSize="1.2em">
@@ -100,7 +89,7 @@ export default function About() {
           <Text>
             <WarningIcon color="yellow.500"></WarningIcon>
             {" - "}
-            sends an Error with your Image Name + Labels to Sentry.
+            sends an Error with your Image Name + Labels.
           </Text>
           <Text>
             <ChatIcon color="yellow.500"></ChatIcon>
@@ -119,19 +108,6 @@ export default function About() {
           padding={5}
           fontSize="1.2em"
         >
-          <Heading size="lg">Check out your data</Heading>
-          <Text>
-            Login to{" "}
-            <Link href="https://sentry.io" isExternal>
-              Sentry.io
-            </Link>{" "}
-            to see your Errors, Perf and Feedback
-          </Text>
-          to see your Error(s) and browse Performance Data!
-          <Text>
-            <Text>Login Using</Text>ID: demo@quickstark.com <br></br>PW:
-            @Sentry2022
-          </Text>
         </Container>
       </VStack>
     </Center>

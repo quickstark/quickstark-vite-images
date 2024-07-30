@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { datadogRum } from '@datadog/browser-rum';
 
 //Import Components
 import About from "./components/About";
@@ -8,8 +9,31 @@ import Error from "./components/Error";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 
-// Import Sentry
-import * as Sentry from "@sentry/react";
+const applicationId = import.meta.env.VITE_DATADOG_APPLICATION_ID;
+const clientToken = import.meta.env.VITE_DATADOG_CLIENT_TOKEN;
+const site = import.meta.env.VITE_DATADOG_SITE;
+const service = import.meta.env.VITE_DATADOG_SERVICE;
+const env = import.meta.env.VITE_ENVIRONMENT;
+const release = import.meta.env.VITE_RELEASE;
+
+console.log(`Application ID: ${applicationId}`);
+console.log(`Client Token: ${clientToken}`);
+
+datadogRum.init({
+    applicationId: applicationId,
+    clientToken: clientToken,
+    site: site,
+    service: service,
+    env: env,
+    version: release, 
+    sessionSampleRate: 100,
+    sessionReplaySampleRate: 100,
+    trackUserInteractions: true,
+    trackResources: true,
+    trackLongTasks: true,
+    defaultPrivacyLevel: 'allow',
+    allowedTracingUrls: ["https://stxwt5g7ffjwgrqzyzgkkj3psq0fuokw.lambda-url.us-west-1.on.aws/", "https://quickstark-fastapi.up.railway.app/",(url) => url.startsWith("http://localhost")]
+});
 
 //Function to reduce and stringify large objects
 function stringifyLargeObject(obj, maxProperties = 1000) {
@@ -41,4 +65,4 @@ function App() {
   );
 }
 
-export default Sentry.withProfiler(App);
+export default App;

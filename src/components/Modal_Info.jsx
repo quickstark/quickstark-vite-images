@@ -44,16 +44,12 @@ export default function Modal_Info({ isOpen, onOpen, onClose }) {
             <Link href="https://www.postgresql.org/" isExternal>
               Postgres
             </Link>
-            , <Text> and </Text>
-            <Link href="https://sentry.io" isExternal>
-              Sentry
-            </Link>
           </Text>
           <br></br>
           <VStack spacing={4} align="left">
             <Text fontSize="lg">
-              Vite & FastAPI have been instrumented with Sentry Error Monitoring
-              and Performance Tracking.
+              Vite & FastAPI have been instrumented Error Monitoring
+              and Performance Monitoring.
             </Text>
             <Text>1. Upload a picture.</Text>
             <Text>
@@ -64,7 +60,7 @@ export default function Modal_Info({ isOpen, onOpen, onClose }) {
             <Text>
               <WarningIcon></WarningIcon>
               {" - "}
-              button to send an Error with your Image Name and Labels to Sentry.
+              button to send an Error with your Image Name and Labels.
             </Text>
             <Text>
               <ChatIcon></ChatIcon>
@@ -76,29 +72,12 @@ export default function Modal_Info({ isOpen, onOpen, onClose }) {
               {" - "}
               button to delete a picture.
             </Text>
-            <Text>
-              Login to{" "}
-              <Link href="https://sentry.io" isExternal>
-                Sentry.io
-              </Link>{" "}
-              to see your Errors, Perf and Feedback
-            </Text>
-            to see your Error(s) and browse Performance Data!
-            <Text>
-              <Text>Login Using</Text>ID: demo@quickstark.com <br></br>PW:
-              @Sentry2022
-            </Text>
           </VStack>
         </ModalBody>
 
         <ModalFooter>
           <Button colorScheme="yellow" mr={3} onClick={onClose}>
             Close
-          </Button>
-          <Button>
-            <Link colorScheme="purple" href="https://sentry.io" isExternal>
-              Sentry.io
-            </Link>
           </Button>
         </ModalFooter>
       </ModalContent>

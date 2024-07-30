@@ -21,12 +21,10 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
 import { useMediaQuery } from "@chakra-ui/react";
 
-import * as Sentry from "@sentry/react";
 import { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
@@ -40,27 +38,15 @@ const api_base_url = import.meta.env.VITE_API_BASE_URL;
 class ValidationError extends Error {
   constructor(message) {
     super(message); // (1)
-    Sentry.configureScope((scope) => {
-      scope.setUser({
-        id: 1,
-        email: "dirk.nielsen@sentry.io",
-      });
-    });
     this.name = `ERROR on - "${message}" `; // (2)
   }
 }
-
-Sentry.setContext("launchdarklyContext", {
-  key: "sentry-errors",
-  kind: "user",
-  name: "Dirk",
-});
 
 const onUnhandledError = async (message) => {
   try {
     throw new Error(message);
   } catch {
-    Sentry.showReportDialog();
+    console.log(`Error: ${message}`);
   }
 };
 
@@ -138,7 +124,7 @@ export default function Home() {
       try {
         toast({
           title: "Error Sent",
-          description: `We sent your ERROR on Error Generator - ${i} to Sentry`,
+          description: `Trapping your ERROR - ${i}`,
           position: "top",
           status: "success",
           duration: 1500,
@@ -146,7 +132,7 @@ export default function Home() {
         });
         throw new ValidationError(`${errorTextRef.current.value} - ${i}`);
       } catch (error) {
-        Sentry.captureException(error);
+        console.log(`Error: ${error}`);
       }
     }
   };
@@ -208,18 +194,11 @@ export default function Home() {
     // Add an attachment
     const name =
       image.name.substring(0, image.name.lastIndexOf(".")) || image.name;
-    Sentry.configureScope((scope) => {
-      scope.addAttachment({
-        filename: `${name}.txt`,
-        data: JSON.stringify(...image.ai_labels, ...image.ai_text),
-      });
-    });
     await image.ai_labels.map((label, index) => {
-      Sentry.setTag(`Keyword-${index}`, label);
     });
     toast({
       title: "Error Sent",
-      description: `We sent your ERROR on - ${image.name} to Sentry`,
+      description: `We sent your ERROR on - ${image.name}`,
       position: "top",
       status: "success",
       duration: 5000,
@@ -227,25 +206,8 @@ export default function Home() {
     });
     // throw new ValidationError(image.name);
     throw new ValidationError(image.name);
-    // Clear attachments
-    Sentry.configureScope((scope) => {
-      scope.clearAttachments();
-    });
   };
 
-  useEffect(() => {
-    // Add an attachment
-    Sentry.configureScope((scope) => {
-      scope.setTransactionName("Home Page");
-      scope.addAttachment({
-        filename: "home_attachment.txt",
-        data: "Attachment on Home Page",
-      });
-    });
-
-    // Capture a "non Error" Message with an attachment
-    Sentry.captureMessage("Home Page Message");
-  }, []);
 
   // Refresh after Upload or Delete
   useEffect(() => {
@@ -260,16 +222,9 @@ export default function Home() {
     <Center>
       <VStack spacing={2}>
         <Image htmlWidth="400px" objectFit="contain" src={"/qs.png"}></Image>
-        {/* <HStack>
-          <Image
-            htmlWidth="75px"
-            objectFit="contain"
-            src={"/sentry.png"}
-          ></Image>
-        </HStack> */}
         <Heading textAlign="center" color="purple.300" as="h2">
           I'm a Smart'ish{" "}
-          <Link color="purple.400" href="https://sentry.io" isExternal>
+          <Link color="purple.400" href="https://datadoghq.com" isExternal>
             Gallery
           </Link>{" "}
         </Heading>
@@ -389,15 +344,13 @@ export default function Home() {
                     icon={<DeleteIcon />}
                   ></IconButton>
                 </div>
-                <Zoom>
-                  <Image
-                    key={`image-${image.id}`}
-                    borderRadius={15}
-                    boxSize="300px"
-                    src={image.url}
-                    objectFit="cover"
-                  ></Image>
-                </Zoom>
+                <Image
+                  key={`image-${image.id}`}
+                  borderRadius={15}
+                  boxSize="300px"
+                  src={image.url}
+                  objectFit="cover"
+                ></Image>
                 <Text
                   key={`label-${image.id}`}
                   className="label_container"
@@ -406,7 +359,6 @@ export default function Home() {
                   {" "}
                   <span className="ai_text">
                     {" "}
-                    {/*Add sentry-mask for Replay*/}
                     Text Detected:{" "}
                     {image.ai_text?.length > 0
                       ? image.ai_text.slice(0, 10).join(",  ")

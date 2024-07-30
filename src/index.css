@@ -44,18 +44,20 @@
   margin: 2px;
   flex-direction: vertical;
   position: relative;
+  z-index: 99;
 }
 
 .delete_button {
   margin: 2px;
   position: relative;
   flex-direction: vertical;
-
+  z-index: 99;
 }
 .feedback_button {
   margin: 2px;
   position: relative;
   flex-direction: vertical;
+  z-index: 99;
 }
 
 .upload_button {

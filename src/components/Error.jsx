@@ -8,21 +8,10 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
-import * as Sentry from "@sentry/react";
 
 export default function Error() {
   useEffect(() => {
-    // Add an attachment
-    Sentry.configureScope((scope) => {
-      scope.setTransactionName("Error Page");
-      scope.addAttachment({
-        filename: "error_attachment.txt",
-        data: "Attachment on Error Page",
-      });
-    });
-
-    // Capture a "non Error" Message with an attachment
-    Sentry.captureMessage("Error Page Message");
+    throw new Error("Forced Error");
   }, []);
 
   return (
