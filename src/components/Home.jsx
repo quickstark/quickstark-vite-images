@@ -32,7 +32,7 @@ import React from "react";
 
 import { useEnvContext } from "./Context";
 
-const api_base_url = import.meta.env.VITE_API_BASE_URL;
+const api_base_url = import.meta.env.VITE_API_URL;
 
 // Change
 class ValidationError extends Error {
