@@ -22,6 +22,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import "react-medium-image-zoom/dist/styles.css";
+import { datadogRum } from '@datadog/browser-rum';
 
 import { useMediaQuery } from "@chakra-ui/react";
 
@@ -38,7 +39,18 @@ const api_base_url = import.meta.env.VITE_API_URL;
 class ValidationError extends Error {
   constructor(message) {
     super(message); // (1)
-    this.name = `ERROR on - "${message}" `; // (2)
+    this.name = `ERROR on - "${message}" `;
+
+    // Create an instance of the error
+    const error = new Error(message);
+
+    // Adding the error instance to Datadog RUM
+    datadogRum.addError(error, {
+      message: this.name,
+      stack: error.stack,
+      source: "Home.jsx",
+      type: "Error"
+    });
   }
 }
 
